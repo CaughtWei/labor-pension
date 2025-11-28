@@ -346,7 +346,7 @@ const App: React.FC = () => {
           </div>
 
           <footer className="text-center text-gray-400 text-sm mt-8 mb-4 font-medium">
-            © 2025 勞保年金 Q 版試算工具 | Designed with React & Tailwind
+            © 2025 勞保年金| Designed with React & Tailwind
           </footer>
 
         </main>
