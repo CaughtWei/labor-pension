@@ -457,7 +457,7 @@ const App: React.FC = () => {
         
         <div className="mt-12 pt-4 border-t border-gray-300 text-center text-xs text-gray-400">
            此報告為初步試算結果，實際金額以勞保局核定為準。<br/>
-           Produced by 勞保年金 Q 版試算工具
+           Produced by 勞保年金試算工具
         </div>
       </div>
     </div>
