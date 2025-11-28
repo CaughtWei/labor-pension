@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ComparisonData } from '../types';
+import { BarChart3 } from 'lucide-react';
 
 interface ChartSectionProps {
   data: ComparisonData[];
@@ -10,14 +10,10 @@ interface ChartSectionProps {
 export const ChartSection: React.FC<ChartSectionProps> = ({ data }) => {
   if (data.every(d => d.amount2 === 0)) return null;
 
-  // Extract labels from the first data point to display in legend if available
-  const label1 = data[0]?.label1 || '預計退休';
-  const label2 = data[0]?.label2 || '+5年';
-
   return (
     <div className="mt-8 bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
       <h3 className="text-lg font-bold text-gray-700 mb-6 flex items-center gap-2">
-        <span>📊</span> 退休金超級比一比
+        <BarChart3 className="text-blue-500" /> 退休金超級比一比
       </h3>
       <div className="h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">

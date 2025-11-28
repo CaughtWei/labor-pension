@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Calculator, Briefcase, Calendar, Coins, User, ArrowRight, Clock, Printer, FileText } from 'lucide-react';
+import { Calculator, Briefcase, Calendar, Coins, User, ArrowRight, Clock, Printer, FileText, Lightbulb, Wallet, Edit3, BarChart, CheckCircle2, LayoutDashboard } from 'lucide-react';
 import { CalculatorState, ComparisonData, CalculationResult } from './types';
 import { calculatePension, getInsuranceGrade, getStatutoryRetirementAge, LABOR_INSURANCE_GRADES, formatCurrency } from './utils/calculation';
 import { InputGroup } from './components/InputGroup';
@@ -162,7 +161,7 @@ const App: React.FC = () => {
               <span className="font-bold tracking-wider">勞保退休金試算</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-black mb-3 leading-tight drop-shadow-md">
-              你的退休金夠用嗎？💰
+              你的退休金夠用嗎？
             </h1>
             <p className="text-blue-50 font-medium opacity-90 text-lg">
               30秒快速試算，提早規劃第二人生！
@@ -176,7 +175,7 @@ const App: React.FC = () => {
           {/* TOP SECTION: Control Panel (Inputs) */}
           <section className="bg-white p-6 md:p-8 rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-white">
             <div className="flex items-center gap-2 mb-6 border-b border-gray-100 pb-4">
-              <span className="text-2xl">📝</span>
+              <Edit3 className="text-gray-700" />
               <h2 className="text-xl font-bold text-gray-700">輸入基本資料</h2>
             </div>
 
@@ -235,7 +234,7 @@ const App: React.FC = () => {
               <div className="col-span-1 md:col-span-2 lg:col-span-4 border-t border-dashed border-gray-100 my-2"></div>
               <div className="col-span-1 md:col-span-2 lg:col-span-4 mb-2">
                 <h3 className="text-sm font-bold text-blue-500 uppercase tracking-wide flex items-center gap-1">
-                  <span>💰</span> 薪資情境模擬
+                  <Wallet size={16} /> 薪資情境模擬
                 </h3>
               </div>
 
@@ -267,8 +266,9 @@ const App: React.FC = () => {
 
               {/* Footer Note */}
               <div className="col-span-1 md:col-span-2 lg:col-span-4">
-                <p className="text-xs text-gray-400 mt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
-                  💡 貼心提醒：若雇主低報薪資，系統將依您輸入的金額自動對應至最接近的勞保級距計算。
+                <p className="text-xs text-gray-400 mt-2 bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-start gap-2">
+                  <Lightbulb size={14} className="mt-0.5 shrink-0" />
+                  貼心提醒：若雇主低報薪資，系統將依您輸入的金額自動對應至最接近的勞保級距計算。
                 </p>
               </div>
             </div>
@@ -328,8 +328,8 @@ const App: React.FC = () => {
           <div className="bg-indigo-600 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden shadow-xl shadow-indigo-200 mt-12">
             <div className="absolute top-0 right-0 w-48 h-48 bg-white opacity-10 rounded-full translate-x-1/2 -translate-y-1/2"></div>
             <div className="relative z-10">
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                  這樣的退休金對你來說夠嗎？🤔
+                <h2 className="text-2xl md:text-3xl font-bold mb-4 flex items-center justify-center gap-2">
+                   這樣的退休金對你來說夠嗎？ <Lightbulb className="text-yellow-300" />
                 </h2>
                 <p className="text-indigo-100 mb-8 max-w-lg mx-auto text-lg">
                   想知道如何每月增加 1~2 萬的被動收入？<br/>
@@ -346,7 +346,7 @@ const App: React.FC = () => {
           </div>
 
           <footer className="text-center text-gray-400 text-sm mt-8 mb-4 font-medium">
-            © 2025 勞保年金 | Designed with React & Tailwind
+            © 2025 勞保年金 Q 版試算工具 | Designed with React & Tailwind
           </footer>
 
         </main>
@@ -355,12 +355,17 @@ const App: React.FC = () => {
       {/* ================= PRINT VIEW ONLY (A4 Layout) ================= */}
       <div className="hidden print:block p-8 max-w-[210mm] mx-auto bg-white">
         <div className="text-center border-b-2 border-slate-800 pb-4 mb-8">
-           <h1 className="text-3xl font-black text-slate-800 mb-2">勞保老年年金試算報告</h1>
+           <div className="flex justify-center items-center gap-2 mb-2">
+             <Calculator size={32} className="text-slate-800" />
+             <h1 className="text-3xl font-black text-slate-800">勞保老年年金試算報告</h1>
+           </div>
            <p className="text-slate-500">試算日期：{new Date().toLocaleDateString('zh-TW')}</p>
         </div>
 
         <div className="mb-8">
-          <h2 className="text-lg font-bold border-l-4 border-blue-500 pl-3 mb-4 text-slate-700">📌 輸入條件</h2>
+          <h2 className="text-lg font-bold border-l-4 border-blue-500 pl-3 mb-4 text-slate-700 flex items-center gap-2">
+            <CheckCircle2 size={20} className="text-blue-500" /> 輸入條件
+          </h2>
           <table className="w-full text-left border-collapse text-sm">
             <tbody>
               <tr className="border-b border-gray-200">
@@ -388,7 +393,9 @@ const App: React.FC = () => {
         </div>
 
         <div>
-          <h2 className="text-lg font-bold border-l-4 border-indigo-500 pl-3 mb-4 text-slate-700">📊 試算結果比較</h2>
+          <h2 className="text-lg font-bold border-l-4 border-indigo-500 pl-3 mb-4 text-slate-700 flex items-center gap-2">
+            <LayoutDashboard size={20} className="text-indigo-500" /> 試算結果比較
+          </h2>
           <div className="grid grid-cols-2 gap-4">
              {/* 1 */}
              <div className="border border-gray-200 rounded-xl p-4 bg-gray-50">
@@ -450,7 +457,7 @@ const App: React.FC = () => {
         
         <div className="mt-12 pt-4 border-t border-gray-300 text-center text-xs text-gray-400">
            此報告為初步試算結果，實際金額以勞保局核定為準。<br/>
-           Produced by 勞保年金
+           Produced by 勞保年金 Q 版試算工具
         </div>
       </div>
     </div>

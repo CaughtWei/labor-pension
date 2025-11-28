@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { CalculationResult } from '../types';
 import { formatCurrency } from '../utils/calculation';
-import { TrendingUp, Clock, ArrowRightCircle, Zap } from 'lucide-react';
+import { TrendingUp, Clock, ArrowRightCircle, Zap, MessageCircleQuestion } from 'lucide-react';
 
 interface ResultCardProps {
   title: string;
@@ -67,7 +66,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   if (result.option1.amount === 0) {
     return (
       <div className={`p-6 rounded-3xl border-2 border-dashed ${borderDashedClass} flex flex-col items-center justify-center text-center min-h-[200px]`}>
-         <span className="text-4xl mb-2">🤔</span>
+         <MessageCircleQuestion className="text-gray-300 mb-2" size={48} />
          <p className="text-gray-400 font-medium">輸入資料後<br/>這裡會顯示試算結果喔！</p>
       </div>
     );

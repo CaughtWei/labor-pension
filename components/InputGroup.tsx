@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { CalculatorState } from '../types';
+import { Info, AlertCircle } from 'lucide-react';
 
 interface InputGroupProps {
   label: string;
@@ -36,7 +36,6 @@ export const InputGroup: React.FC<InputGroupProps> = ({
   className = ""
 }) => {
   // Use custom className if provided, or default bottom margin if not managed by grid gap.
-  // Ideally with grid layout we don't need mb-5, but keeping it ensures spacing on mobile stack.
   const containerClasses = `${className}`; 
 
   if (inline) {
@@ -65,16 +64,16 @@ export const InputGroup: React.FC<InputGroupProps> = ({
           </div>
 
           {helperText && (
-            <span className="text-xs font-bold text-orange-500 bg-orange-100 px-3 py-2 rounded-xl whitespace-nowrap flex items-center shadow-sm border border-orange-200">
-              ℹ️ {helperText}
+            <span className="text-xs font-bold text-orange-500 bg-orange-100 px-3 py-2 rounded-xl whitespace-nowrap flex items-center gap-1 shadow-sm border border-orange-200">
+              <Info size={14} /> {helperText}
             </span>
           )}
         </div>
         
         {/* Error Message */}
         {error && (
-          <div className="text-red-500 text-xs mt-1 ml-2 font-bold animate-pulse">
-            ⚠️ {error}
+          <div className="text-red-500 text-xs mt-1 ml-2 font-bold animate-pulse flex items-center gap-1">
+            <AlertCircle size={14} /> {error}
           </div>
         )}
       </div>
@@ -136,8 +135,8 @@ export const InputGroup: React.FC<InputGroupProps> = ({
       
       {/* Error Message */}
       {error && (
-        <div className="text-red-500 text-xs mt-1 ml-2 font-bold animate-pulse">
-          ⚠️ {error}
+        <div className="text-red-500 text-xs mt-1 ml-2 font-bold animate-pulse flex items-center gap-1">
+          <AlertCircle size={14} /> {error}
         </div>
       )}
 
