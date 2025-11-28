@@ -346,7 +346,7 @@ const App: React.FC = () => {
           </div>
 
           <footer className="text-center text-gray-400 text-sm mt-8 mb-4 font-medium">
-            © 2025 勞保年金 Q 版試算工具 | Designed with React & Tailwind
+            © 2025 勞保年金 | Designed with React & Tailwind
           </footer>
 
         </main>
@@ -450,7 +450,7 @@ const App: React.FC = () => {
         
         <div className="mt-12 pt-4 border-t border-gray-300 text-center text-xs text-gray-400">
            此報告為初步試算結果，實際金額以勞保局核定為準。<br/>
-           Produced by 勞保年金 Q 版試算工具
+           Produced by 勞保年金
         </div>
       </div>
     </div>
