@@ -135,7 +135,7 @@ const App: React.FC = () => {
   ];
 
   const handleContact = () => {
-    alert("✨ 謝謝您的興趣！\n我們將儘快安排專人協助您規劃退休生活！");
+    window.open('https://line.me/ti/p/@250bajjc', '_blank');
   };
   
   const handlePrint = () => {
