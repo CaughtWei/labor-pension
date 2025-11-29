@@ -85,14 +85,13 @@ export const ResultCard: React.FC<ResultCardProps> = ({
         <p className="text-gray-500 text-sm mb-5 font-medium min-h-[2.5rem] flex items-center">{subtitle}</p>
 
         <div className="space-y-4 mt-auto">
-          {/* Option 1 (User Input Age) */}
+          {/* Option 1 (60 years old) */}
           <div className="bg-white/60 p-3 rounded-2xl flex justify-between items-center backdrop-blur-sm">
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className={`px-2 py-1 rounded-lg text-xs font-bold ${badge1Class}`}>
-                  {result.option1.age}歲
+                  {result.option1.label}
                 </span>
-                <span className="text-gray-700 text-sm font-bold">退休</span>
               </div>
               {result.option1.subLabel && (
                 <span className="text-[10px] text-gray-400 mt-1 ml-1">{result.option1.subLabel}</span>
@@ -104,14 +103,13 @@ export const ResultCard: React.FC<ResultCardProps> = ({
             </div>
           </div>
 
-          {/* Option 2 (User Age + 5) */}
+          {/* Option 2 (65 years old) */}
           <div className="bg-white p-3 rounded-2xl flex justify-between items-center shadow-sm ring-1 ring-black/5">
             <div className="flex flex-col">
                <div className="flex items-center gap-2">
                 <span className={`px-2 py-1 rounded-lg text-xs font-bold ${badge2Class}`}>
-                  {result.option2.age}歲
+                  {result.option2.label}
                 </span>
-                <span className="text-gray-700 text-sm font-bold">退休</span>
               </div>
               <span className="text-[10px] text-gray-400 mt-1 ml-1">{result.option2.subLabel}</span>
             </div>

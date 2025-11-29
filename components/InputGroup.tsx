@@ -53,6 +53,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
               name={name}
               value={value}
               onChange={onChange}
+              onWheel={(e) => e.currentTarget.blur()}
               placeholder={placeholder}
               className={`w-full px-4 py-3 rounded-2xl border-2 ${error ? 'border-red-300 bg-red-50' : 'border-blue-100 bg-white'} text-gray-700 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-lg shadow-sm placeholder-gray-300`}
             />
@@ -121,6 +122,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
             name={name}
             value={value}
             onChange={onChange}
+            onWheel={(e) => e.currentTarget.blur()}
             placeholder={placeholder}
             className={`w-full px-4 py-3 rounded-2xl border-2 ${error ? 'border-red-300 bg-red-50' : 'border-blue-100 bg-white'} text-gray-700 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-lg shadow-sm placeholder-gray-300`}
           />

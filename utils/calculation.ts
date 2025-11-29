@@ -35,47 +35,15 @@ export const getStatutoryRetirementAge = (rocYear: number): number => {
   return 60;
 };
 
-/**
- * Calculates a single pension option amount
- * @param salary Monthly insured salary
- * @param years Insured years
- * @param claimAge The age at which the user plans to retire/claim
- * @returns Monthly pension amount
- */
-const calculateOptionAmount = (salary: number, years: number, claimAge: number): number => {
-  // Statutory rules:
-  // Statutory Age = 65
-  // Min Claim Age = 60 (20% reduction)
-  // Max Deferred Age = 70 (20% increase)
-  
-  // If user inputs < 60, we calculate based on 60 (Earliest allowed), 
-  // assuming they stop working at 'claimAge' but start drawing at 60.
-  const effectiveAge = Math.max(claimAge, 60);
-  const statutoryAge = 65; // Note: For calculation purposes we use 65 as baseline for reduction/increase logic in this simplified model
-  
-  // Calculate difference from statutory age
-  // E.g. 60 - 65 = -5 (Early)
-  // E.g. 70 - 65 = +5 (Deferred)
-  let diff = effectiveAge - statutoryAge;
-  
-  // Cap difference at +/- 5 years
-  diff = Math.max(-5, Math.min(5, diff));
-
-  // 4% per year
-  const multiplier = 1 + (diff * 0.04);
-  
-  const baseAmount = salary * years * 0.0155;
-  return Math.round(baseAmount * multiplier);
-};
-
 export const calculatePension = (
   salaryStr: string,
   yearsStr: string,
-  userRetireAgeStr: string
 ): CalculationResult => {
   let salary = parseFloat(salaryStr);
   const years = parseFloat(yearsStr);
-  const userAge = parseInt(userRetireAgeStr) || 60; // Default to 60 if empty
+  
+  // Note: We ignore user input age for the result columns as requested.
+  // We standardize on comparing Age 60 vs Age 65.
 
   if (isNaN(salary) || isNaN(years) || salary <= 0 || years <= 0) {
     return { 
@@ -85,32 +53,34 @@ export const calculatePension = (
     };
   }
 
-  // Determine the effective start age for the first option.
-  // We cannot claim before 60.
-  const effectiveStartAge = Math.max(userAge, 60);
+  // Formula: Salary * Years * 1.55%
+  const baseAmount = salary * years * 0.0155;
 
-  // Option 1: User's Projected Age
-  // Display matches user input (e.g. 55), but math uses effectiveStartAge (60)
-  const age1 = userAge;
-  const amount1 = calculateOptionAmount(salary, years, age1);
+  // Option 1: 60 Years Old (Early Withdrawal)
+  // Rule: Max 5 years early, 4% reduction per year.
+  // 60 is 5 years before 65.
+  // Reduction = 5 * 4% = 20%.
+  // Multiplier = 0.8
+  const age1 = 60;
+  const amount1 = Math.round(baseAmount * 0.8);
 
-  // Option 2: Effective Start + 5 Years
-  // This ensures that even if user puts 55, we compare 60 vs 65 (instead of 60 vs 60)
-  const age2 = effectiveStartAge + 5;
-  const amount2 = calculateOptionAmount(salary, years, age2);
+  // Option 2: 65 Years Old (Statutory Withdrawal)
+  // Full amount.
+  const age2 = 65;
+  const amount2 = Math.round(baseAmount);
 
   return {
     option1: {
       age: age1,
       amount: amount1,
-      label: `${age1}歲退休`,
-      subLabel: age1 < 60 ? `(依規定${effectiveStartAge}歲起領)` : undefined
+      label: '60歲請領',
+      subLabel: '(提早5年, 減給20%)'
     },
     option2: {
       age: age2,
       amount: amount2,
-      label: `${age2}歲`,
-      subLabel: '(往後+5年)'
+      label: '65歲請領',
+      subLabel: '(法定年齡, 全額給付)'
     },
     totalYears: years,
   };

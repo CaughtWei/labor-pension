@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Calculator, Briefcase, Calendar, Coins, User, ArrowRight, Clock, Printer, FileText, Lightbulb, Wallet, Edit3, BarChart, CheckCircle2, LayoutDashboard } from 'lucide-react';
+import { Briefcase, Calendar, Coins, User, ArrowRight, Clock, Printer, Lightbulb, Wallet, Edit3, CheckCircle2, LayoutDashboard, Calculator } from 'lucide-react';
 import { CalculatorState, ComparisonData, CalculationResult } from './types';
 import { calculatePension, getInsuranceGrade, getStatutoryRetirementAge, LABOR_INSURANCE_GRADES, formatCurrency } from './utils/calculation';
 import { InputGroup } from './components/InputGroup';
 import { ResultCard } from './components/ResultCard';
 import { ChartSection } from './components/ChartSection';
+import { Logo } from './components/Logo';
 
 const App: React.FC = () => {
   const [formData, setFormData] = useState<CalculatorState>({
@@ -73,34 +74,32 @@ const App: React.FC = () => {
 
   // Recalculate Results
   useEffect(() => {
-    const baseYears = parseInt(formData.insuredYears) || 0;
-    const baseRetireAge = parseInt(formData.retirementAge) || 60;
+    const baseYears = formData.insuredYears; // Keep as string for now
     const projectedSal = formData.projectedSalary;
 
     // 1. Current Salary Result
     // Uses the Auto-Calculated Grade
     const currentGrade = autoGrade ? autoGrade.toString() : '0';
-    setCurrentResult(calculatePension(currentGrade, formData.insuredYears, formData.retirementAge));
+    setCurrentResult(calculatePension(currentGrade, baseYears));
 
     // 2. Projected Salary Result
     // Uses the Dropdown Value directly
-    setProjectedResult(calculatePension(projectedSal, formData.insuredYears, formData.retirementAge));
+    setProjectedResult(calculatePension(projectedSal, baseYears));
 
     // 3. Extended Service Result (Work 5 more years)
-    // Logic: Same Projected Salary, but Years + 5, and Age + 5 (assuming you work those extra years)
-    if (baseYears > 0) {
-      const extYears = (baseYears + 5).toString();
-      const extAge = (baseRetireAge + 5).toString();
-      setExtendedResult(calculatePension(projectedSal, extYears, extAge));
+    // Logic: Same Projected Salary, but Years + 5
+    if (parseInt(baseYears) > 0) {
+      const extYears = (parseInt(baseYears) + 5).toString();
+      setExtendedResult(calculatePension(projectedSal, extYears));
       
       // 4. Extended Service with CURRENT Salary
-      setExtendedCurrentResult(calculatePension(currentGrade, extYears, extAge));
+      setExtendedCurrentResult(calculatePension(currentGrade, extYears));
     } else {
       setExtendedResult(emptyResult);
       setExtendedCurrentResult(emptyResult);
     }
 
-  }, [formData.insuredYears, autoGrade, formData.projectedSalary, formData.retirementAge]);
+  }, [formData.insuredYears, autoGrade, formData.projectedSalary]);
 
   // Data for chart
   const chartData: ComparisonData[] = [
@@ -108,33 +107,34 @@ const App: React.FC = () => {
       scenario: '目前薪資',
       amount1: currentResult.option1.amount,
       amount2: currentResult.option2.amount,
-      label1: `${currentResult.option1.age}歲`,
-      label2: `${currentResult.option2.age}歲`,
+      label1: currentResult.option1.label,
+      label2: currentResult.option2.label,
     },
     {
       scenario: '預期薪資',
       amount1: projectedResult.option1.amount,
       amount2: projectedResult.option2.amount,
-      label1: `${projectedResult.option1.age}歲`,
-      label2: `${projectedResult.option2.age}歲`,
+      label1: projectedResult.option1.label,
+      label2: projectedResult.option2.label,
     },
     {
       scenario: '續拚(原薪)',
       amount1: extendedCurrentResult.option1.amount,
       amount2: extendedCurrentResult.option2.amount,
-      label1: `${extendedCurrentResult.option1.age}歲`,
-      label2: `${extendedCurrentResult.option2.age}歲`,
+      label1: extendedCurrentResult.option1.label,
+      label2: extendedCurrentResult.option2.label,
     },
     {
       scenario: '續拚(調薪)',
       amount1: extendedResult.option1.amount,
       amount2: extendedResult.option2.amount,
-      label1: `${extendedResult.option1.age}歲`,
-      label2: `${extendedResult.option2.age}歲`,
+      label1: extendedResult.option1.label,
+      label2: extendedResult.option2.label,
     },
   ];
 
   const handleContact = () => {
+    // Redirect to Official LINE Account
     window.open('https://line.me/ti/p/@250bajjc', '_blank');
   };
   
@@ -157,8 +157,8 @@ const App: React.FC = () => {
           
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <div className="inline-flex items-center justify-center p-3 bg-white/20 backdrop-blur-md rounded-2xl mb-4 shadow-inner ring-1 ring-white/30">
-              <Calculator className="mr-2" /> 
-              <span className="font-bold tracking-wider">勞保退休金試算</span>
+              <Logo size={40} className="mr-2 drop-shadow-sm" />
+              <span className="font-bold tracking-wider text-xl">勞保退休金試算</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-black mb-3 leading-tight drop-shadow-md">
               你的退休金夠用嗎？
@@ -299,7 +299,7 @@ const App: React.FC = () => {
               
               <ResultCard 
                 title="續拚(原薪)"
-                subtitle={`投保年資 +5年 (約${extendedCurrentResult.option1.age}歲退休)`}
+                subtitle="投保年資 + 5 年"
                 result={extendedCurrentResult}
                 colorTheme="purple"
               />
@@ -313,10 +313,20 @@ const App: React.FC = () => {
 
               <ResultCard 
                 title="續拚(調薪)"
-                subtitle={`投保年資 +5年 (約${extendedResult.option1.age}歲退休)`}
+                subtitle="投保年資 + 5 年"
                 result={extendedResult}
                 colorTheme="green"
               />
+            </div>
+
+             {/* Formula Explanation */}
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 text-gray-500 bg-white/60 p-4 rounded-2xl border border-white shadow-sm">
+               <div className="flex items-center gap-2 font-bold text-sm">
+                 <Calculator size={16} />
+                 <span>勞保年金計算公式：</span>
+               </div>
+               <code className="bg-gray-100 px-3 py-1 rounded-lg text-sm text-gray-700 font-mono">平均月投保薪資 × 年資 × 1.55%</code>
+               <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded border border-red-200 ml-1">擇優給付</span>
             </div>
 
             {/* Chart */}
@@ -346,7 +356,7 @@ const App: React.FC = () => {
           </div>
 
           <footer className="text-center text-gray-400 text-sm mt-8 mb-4 font-medium">
-            © 2025 勞保年金| Designed with React & Tailwind
+            © 2025 勞保年金 Q 版試算工具 | Designed with React & Tailwind
           </footer>
 
         </main>
@@ -356,7 +366,7 @@ const App: React.FC = () => {
       <div className="hidden print:block p-8 max-w-[210mm] mx-auto bg-white">
         <div className="text-center border-b-2 border-slate-800 pb-4 mb-8">
            <div className="flex justify-center items-center gap-2 mb-2">
-             <Calculator size={32} className="text-slate-800" />
+             <Logo size={50} />
              <h1 className="text-3xl font-black text-slate-800">勞保老年年金試算報告</h1>
            </div>
            <p className="text-slate-500">試算日期：{new Date().toLocaleDateString('zh-TW')}</p>
@@ -402,11 +412,11 @@ const App: React.FC = () => {
                 <h3 className="font-bold text-blue-700 mb-2">方案 A：目前薪資</h3>
                 <div className="text-xs text-gray-500 mb-2">依投保級距 {autoGrade ? formatCurrency(autoGrade) : '-'} 計算</div>
                 <div className="flex justify-between items-end mb-1 border-b border-gray-200 pb-1">
-                   <span>{currentResult.option1.age}歲領</span>
+                   <span>{currentResult.option1.label}</span>
                    <span className="font-bold">{formatCurrency(currentResult.option1.amount)}/月</span>
                 </div>
                 <div className="flex justify-between items-end">
-                   <span>{currentResult.option2.age}歲領 (+5年)</span>
+                   <span>{currentResult.option2.label}</span>
                    <span className="font-bold text-lg">{formatCurrency(currentResult.option2.amount)}/月</span>
                 </div>
              </div>
@@ -416,11 +426,11 @@ const App: React.FC = () => {
                 <h3 className="font-bold text-purple-700 mb-2">方案 B：續拚 (原薪)</h3>
                 <div className="text-xs text-gray-500 mb-2">投保年資多 5 年，薪資不變</div>
                 <div className="flex justify-between items-end mb-1 border-b border-gray-200 pb-1">
-                   <span>{extendedCurrentResult.option1.age}歲領</span>
+                   <span>{extendedCurrentResult.option1.label}</span>
                    <span className="font-bold">{formatCurrency(extendedCurrentResult.option1.amount)}/月</span>
                 </div>
                 <div className="flex justify-between items-end">
-                   <span>{extendedCurrentResult.option2.age}歲領 (+5年)</span>
+                   <span>{extendedCurrentResult.option2.label}</span>
                    <span className="font-bold text-lg">{formatCurrency(extendedCurrentResult.option2.amount)}/月</span>
                 </div>
              </div>
@@ -430,11 +440,11 @@ const App: React.FC = () => {
                 <h3 className="font-bold text-pink-700 mb-2">方案 C：調薪後預估</h3>
                 <div className="text-xs text-gray-500 mb-2">依預估級距 {formatCurrency(parseInt(formData.projectedSalary))} 計算</div>
                 <div className="flex justify-between items-end mb-1 border-b border-gray-200 pb-1">
-                   <span>{projectedResult.option1.age}歲領</span>
+                   <span>{projectedResult.option1.label}</span>
                    <span className="font-bold">{formatCurrency(projectedResult.option1.amount)}/月</span>
                 </div>
                 <div className="flex justify-between items-end">
-                   <span>{projectedResult.option2.age}歲領 (+5年)</span>
+                   <span>{projectedResult.option2.label}</span>
                    <span className="font-bold text-lg">{formatCurrency(projectedResult.option2.amount)}/月</span>
                 </div>
              </div>
@@ -444,11 +454,11 @@ const App: React.FC = () => {
                 <h3 className="font-bold text-green-700 mb-2">方案 D：續拚 (調薪)</h3>
                 <div className="text-xs text-gray-500 mb-2">投保年資多 5 年，且有調薪</div>
                 <div className="flex justify-between items-end mb-1 border-b border-gray-200 pb-1">
-                   <span>{extendedResult.option1.age}歲領</span>
+                   <span>{extendedResult.option1.label}</span>
                    <span className="font-bold">{formatCurrency(extendedResult.option1.amount)}/月</span>
                 </div>
                 <div className="flex justify-between items-end">
-                   <span>{extendedResult.option2.age}歲領 (+5年)</span>
+                   <span>{extendedResult.option2.label}</span>
                    <span className="font-bold text-lg">{formatCurrency(extendedResult.option2.amount)}/月</span>
                 </div>
              </div>
@@ -457,7 +467,7 @@ const App: React.FC = () => {
         
         <div className="mt-12 pt-4 border-t border-gray-300 text-center text-xs text-gray-400">
            此報告為初步試算結果，實際金額以勞保局核定為準。<br/>
-           Produced by 勞保年金試算工具
+           Produced by 勞保年金 Q 版試算工具
         </div>
       </div>
     </div>
