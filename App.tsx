@@ -160,7 +160,7 @@ const App: React.FC = () => {
               <Logo size={42} className="mr-3 drop-shadow-sm" />
               <div className="flex flex-col items-start text-left">
                 <span className="font-bold tracking-wider text-xl leading-none mb-1">勞保退休金試算</span>
-                <span className="text-xs text-blue-100 font-medium tracking-wide">魏文瑾 Amber 制</span>
+                <span className="text-xs text-blue-100 font-medium tracking-wide">魏文瑾 Amber 製</span>
               </div>
             </div>
             <h1 className="text-3xl md:text-4xl font-black mb-3 leading-tight drop-shadow-md">
