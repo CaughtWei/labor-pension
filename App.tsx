@@ -157,8 +157,11 @@ const App: React.FC = () => {
           
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <div className="inline-flex items-center justify-center p-3 bg-white/20 backdrop-blur-md rounded-2xl mb-4 shadow-inner ring-1 ring-white/30">
-              <Logo size={40} className="mr-2 drop-shadow-sm" />
-              <span className="font-bold tracking-wider text-xl">勞保退休金試算</span>
+              <Logo size={42} className="mr-3 drop-shadow-sm" />
+              <div className="flex flex-col items-start text-left">
+                <span className="font-bold tracking-wider text-xl leading-none mb-1">勞保退休金試算</span>
+                <span className="text-xs text-blue-100 font-medium tracking-wide">魏文瑾 Amber 制</span>
+              </div>
             </div>
             <h1 className="text-3xl md:text-4xl font-black mb-3 leading-tight drop-shadow-md">
               你的退休金夠用嗎？
@@ -356,7 +359,7 @@ const App: React.FC = () => {
           </div>
 
           <footer className="text-center text-gray-400 text-sm mt-8 mb-4 font-medium">
-            © 2025 勞保年金試算工具 | Designed with React & Tailwind
+            © 2025 勞保年金試算工具 | Designed by 魏文瑾 Amber
           </footer>
 
         </main>
@@ -467,7 +470,7 @@ const App: React.FC = () => {
         
         <div className="mt-12 pt-4 border-t border-gray-300 text-center text-xs text-gray-400">
            此報告為初步試算結果，實際金額以勞保局核定為準。<br/>
-           Produced by 勞保年金試算工具
+           Produced by 魏文瑾 Amber
         </div>
       </div>
     </div>
